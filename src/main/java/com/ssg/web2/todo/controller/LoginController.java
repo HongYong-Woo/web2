@@ -40,14 +40,19 @@ public class LoginController extends HttpServlet {
         try {
             MemberDTO dto = memberService.login(mid, mpw);
             if(dto.getMid() != null) {
-                String str = mid + mpw;
+                //String str = mid + mpw;
                 HttpSession session = req.getSession(); //HttpSession을 이용해서 setAttribute()를 사용자공간에 loginInfo라는 이름으로 문자열을 보관
-                session.setAttribute("loginInfo", str);
+                session.setAttribute("loginInfo", dto);
                 resp.sendRedirect("/todo/list");
             }
+            else {
+                throw new Exception();
+            }
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            resp.sendRedirect("/login?result=error");
         }
+            //정상적으로 로그인된 경우에는 HttpSession을 이용해서 loginInfo라는 이름으로 객체를 저장
+            //예외가 발생한다면 /login
 
 
     }
